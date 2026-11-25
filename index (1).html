@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A Little Something</title>
+<meta name="description" content="A little something.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#2B1B14">
+<meta property="og:title" content="A little something">
+<meta property="og:description" content="Open when ready.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='8' fill='%23C9A96E'/%3E%3C/svg%3E">
+
+<!-- Fonts: the only external request. If it fails, Georgia / system sans-serif are used instead. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+<!--
+  A LITTLE SOMETHING
+  ------------------------------------------------------------------
+  To personalise this page, search this file for  EDIT HERE.
+  Her name, your name, the date and the message are all in one small
+  block of text near the bottom. You do not need to touch anything else.
+
+  The little illustrations around the page ("stickers") live in the
+  block marked  STICKERS  near the top of <body>. One line = one sticker.
+-->
+
+<style>
+  :root {
+    /* Palette */
+    --ivory: #F6F3EC;
+    --charcoal: #242B35;
+    --grey: #858783;
+    --bg: #2B1B14;          /* deep chocolate */
+    --bg-deep: #1B100B;     /* edges of the page */
+    --bg-glow: #432A1C;     /* soft candlelight behind the content */
+    --choc: #6F4A3A;
+    --espresso: #3B261C;
+    --gold: #C9A96E;        /* champagne gold */
+    --gold-deep: #B8964F;
+    --paper: #FBF8F1;       /* the letter and the card */
+    --ink-muted: #5C5A55;   /* small text on paper (6:1 contrast) */
+
+    /* Envelope */
+    --env-inside: #CDB99B;
+    --env-front: #E8DCC6;
+    --env-flap: #F2E9D8;
+    --env-flap-inside: #D6C4A8;
+
+    --serif: "Playfair Display", Georgia, "Times New Roman", serif;
+    --sans: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --ease: cubic-bezier(.22, .61, .36, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+
+  html { -webkit-text-size-adjust: 100%; background: var(--bg-deep); }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--ivory);
+    background: radial-gradient(ellipse 85% 70% at 50% 40%, var(--bg-glow) 0%, var(--bg) 52%, var(--bg-deep) 100%) fixed;
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  .stage {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding:
+      max(2rem, env(safe-area-inset-top))
+      max(1rem, env(safe-area-inset-right))
+      max(2rem, env(safe-area-inset-bottom))
+      max(1rem, env(safe-area-inset-left));
+  }
+
+  .screen {
+    grid-area: 1 / 1;
+    width: 100%;
+    max-width: 34rem;
+    text-align: center;
+  }
+
+  /* ---------- Shared motion ---------- */
+
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes draw { from { opacity: 0; transform: scaleX(0); } to { opacity: 1; transform: scaleX(1); } }
+
+  /* Intro entrance. "backwards" fill so the opening transitions below can take over afterwards. */
+  .enter {
+    animation: fade .9s var(--ease) backwards;
+    animation-delay: calc(var(--i, 0) * 130ms + 100ms);
+  }
+  .enter--rise { animation-name: rise; }
+
+  /* ---------- Stickers ---------- */
+
+  .decor {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* --x/--y = centre on phones and tablets, --xl/--yl = centre on wide screens (percent of the window).
+     --s / --sl = height in px on phones / wide screens. --r = tilt in degrees. */
+  .st {
+    --k: 1;
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    height: calc(var(--s) * var(--k) * 1px);
+    width: calc(var(--s) * var(--k) * var(--ar) * 1px);
+    transform: translate(-50%, -50%) rotate(calc(var(--r) * 1deg));
+    animation: settle 1.1s var(--ease) backwards;
+    animation-delay: calc(var(--i) * 70ms + 300ms);
+  }
+  .st svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+  @keyframes settle {
+    from { opacity: 0; transform: translate(-50%, calc(-50% - 16px)) rotate(calc(var(--r) * 1deg - 10deg)) scale(.9); }
+    to   { opacity: 1; transform: translate(-50%, -50%) rotate(calc(var(--r) * 1deg)) scale(1); }
+  }
+
+  /* Phones and tablets: stickers frame the content from above, below and the sides.
+     Wide screens (1100px and up): they fill the space on both sides of it. */
+  @media (max-width: 1099px) { .st--wide { display: none; } }
+  @media (min-width: 720px) and (max-width: 1099px) { .st { --k: 1.35; } }
+  @media (max-height: 600px) { .st { --k: .8; } }
+  @media (max-height: 480px) { .st { display: none; } }
+  @media (min-width: 1100px) {
+    .st {
+      left: var(--xl);
+      top: var(--yl);
+      height: calc(var(--sl) * var(--k) * 1px);
+      width: calc(var(--sl) * var(--k) * var(--ar) * 1px);
+    }
+  }
+  @media (min-width: 1100px) and (max-height: 600px) { .st { --k: .7; } }
+
+  /* ---------- Screen 1: introduction ---------- */
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .intro__title {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2rem, 8.5vw, 3.1rem);
+    line-height: 1.15;
+    letter-spacing: -.01em;
+    text-wrap: balance;
+  }
+
+  .intro__date {
+    margin: 1.25rem 0 0;
+    font-size: .75rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: .2em;
+    text-indent: .2em; /* balances the trailing letter-space so the line stays optically centred */
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .btn {
+    appearance: none;
+    border: 0;
+    border-radius: 2px;
+    min-height: 3rem;
+    padding: 1.1rem 2rem;
+    background: var(--ivory);
+    color: var(--espresso);
+    font: 500 .8rem/1 var(--sans);
+    letter-spacing: .18em;
+    text-indent: .18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: background-color .3s var(--ease), transform .3s var(--ease);
+  }
+  .btn:hover { background: var(--gold); }
+  .btn:active { transform: translateY(1px); }
+  .btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+
+  /* ---------- The envelope ---------- */
+
+  .envelope {
+    --w: min(76vw, 320px);
+    --h: calc(var(--w) * .66);
+    position: relative;
+    width: var(--w);
+    height: var(--h);
+    margin: clamp(2.25rem, 7vh, 3.5rem) 0 clamp(2rem, 6vh, 2.75rem);
+    perspective: 900px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .5s var(--ease);
+  }
+
+  /* Soft ground shadow */
+  .envelope::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 8%;
+    right: 8%;
+    bottom: -.9rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, .55);
+    filter: blur(12px);
+  }
+
+  @media (hover: hover) {
+    .intro:not(.is-opening) .envelope:hover { transform: translateY(-4px); }
+  }
+
+  .env__back {
+    position: absolute;
+    inset: 0;
+    background: var(--env-inside);
+  }
+
+  .env__letter {
+    position: absolute;
+    z-index: 1;
+    left: 7%;
+    top: 3%;
+    width: 86%;
+    height: 97%;
+    background: var(--paper);
+  }
+
+  .env__line {
+    position: absolute;
+    left: 12%;
+    height: 2px;
+    border-radius: 1px;
+    background: rgba(133, 135, 131, .4);
+  }
+  .env__line--accent { top: 12%; width: 22%; background: rgba(184, 150, 79, .9); }
+  .env__line:nth-child(2) { top: 24%; width: 70%; }
+  .env__line:nth-child(3) { top: 32%; width: 62%; }
+  .env__line:nth-child(4) { top: 40%; width: 46%; }
+
+  /* Front of the envelope: everything except the top triangle, which the flap covers */
+  .env__pocket {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: var(--env-front);
+    clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%);
+  }
+  .env__pocket svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .env__pocket path {
+    fill: none;
+    stroke: rgba(59, 38, 28, .22);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .env__flap {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 55%;
+    transform-origin: 50% 0;
+    transform-style: preserve-3d;
+  }
+  .env__face {
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  .env__face--front { background: var(--env-flap); }
+  .env__face--back { background: var(--env-flap-inside); transform: rotateY(180deg); }
+
+  /* Black satin bow tied at the tip of the flap */
+  .env__bow {
+    position: absolute;
+    z-index: 4;
+    left: 50%;
+    top: 55%;
+    width: 26%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -52%);
+    color: #1B1210;
+    filter: drop-shadow(0 2px 3px rgba(59, 38, 28, .35));
+    transition: opacity .25s ease, transform .25s ease;
+  }
+  .env__bow svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+  /* ---------- Opening sequence ----------
+     0.00s  words and button fade out, bow fades
+     0.25s  flap swings open (z-order swaps at its midpoint, 0.65s)
+     0.85s  letter slides up out of the envelope
+     2.00s  scene fades out (JS)  ->  2.55s message screen appears (JS) */
+
+  .is-opening .enter:not(.envelope) {
+    animation: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .45s ease;
+  }
+  .is-opening .envelope { animation: none; cursor: default; pointer-events: none; }
+  .is-opening .env__bow { opacity: 0; transform: translate(-50%, -52%) scale(.7); }
+  .is-opening .env__flap {
+    transform: rotateX(-180deg);
+    z-index: 0;
+    transition: transform .8s cubic-bezier(.45, 0, .25, 1) .25s, z-index 0s linear .65s;
+  }
+  .is-opening .env__letter {
+    transform: translateY(calc(var(--h) * -.42));
+    box-shadow: 0 0 0 1px rgba(59, 38, 28, .1), 0 6px 18px rgba(0, 0, 0, .3);
+    transition: transform .9s cubic-bezier(.22, .75, .3, 1) .85s;
+  }
+  .intro.is-leaving { opacity: 0; transition: opacity .55s ease; }
+
+  /* ---------- Screen 3: the message (an ivory card) ---------- */
+
+  .message { max-width: 32rem; }
+
+  .card {
+    position: relative;
+    padding: clamp(2.1rem, 7vw, 3.4rem) clamp(1.4rem, 6vw, 3.25rem);
+    background: var(--paper);
+    color: var(--charcoal);
+    border-radius: 3px;
+    box-shadow: 0 34px 60px -26px rgba(0, 0, 0, .7), 0 2px 8px rgba(0, 0, 0, .3);
+    animation: rise 1s var(--ease) both;
+  }
+  /* A fine gold line, inset like the edge of a stationery card */
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    border: 1px solid rgba(184, 150, 79, .55);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  .reveal {
+    animation: rise 1s var(--ease) both;
+    animation-delay: calc(var(--i, 0) * 260ms + 350ms);
+  }
+
+  .msg__greeting {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2.2rem, 10vw, 3.3rem);
+    line-height: 1.1;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+  }
+  .msg__greeting:focus { outline: none; }
+
+  .msg__rule {
+    display: block;
+    width: 2.75rem;
+    height: 1px;
+    margin: 1.4rem auto 1.7rem;
+    background: var(--gold-deep);
+    animation: draw 1.1s var(--ease) both;
+    animation-delay: calc(var(--i, 0) * 260ms + 350ms);
+  }
+
+  .msg__body p {
+    max-width: 24rem;
+    margin: 0 auto 1.1rem;
+    font-size: 1rem;
+    line-height: 1.7;
+    text-wrap: pretty;
+  }
+  .msg__body p:last-child { margin-bottom: 0; }
+
+  .msg__closing {
+    margin: 2rem 0 0;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.3rem, 5.6vw, 1.85rem);
+    line-height: 1.3;
+    color: var(--choc);
+    text-wrap: balance;
+  }
+
+  .msg__signature {
+    margin: 2rem 0 0;
+    font-size: .875rem;
+    letter-spacing: .02em;
+    color: var(--ink-muted);
+  }
+
+  /* ---------- Sound on / off ---------- */
+
+  .sound-toggle {
+    position: fixed;
+    top: max(.5rem, env(safe-area-inset-top));
+    right: max(.5rem, env(safe-area-inset-right));
+    z-index: 5;
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: 1px solid rgba(201, 169, 110, .45);
+    border-radius: 50%;
+    background: rgba(27, 16, 11, .6);
+    color: var(--gold);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: background-color .3s var(--ease), border-color .3s var(--ease);
+    animation: fade .9s var(--ease) 1s backwards;
+  }
+  .sound-toggle:hover { background: rgba(27, 16, 11, .85); border-color: var(--gold); }
+  .sound-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  .sound-toggle svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .sound-toggle .slash { display: none; }
+  .sound-toggle.is-off .wave { display: none; }
+  .sound-toggle.is-off .slash { display: block; }
+
+  /* ---------- Quiet celebration: a few champagne bubbles rising ---------- */
+
+  .particles {
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .particle {
+    position: absolute;
+    left: 50%;
+    top: 56%;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    opacity: 0;
+    animation: drift var(--dur) var(--ease) var(--delay) both;
+  }
+
+  @keyframes drift {
+    0%   { opacity: 0; transform: translate(0, 0) scale(.6); }
+    18%  { opacity: .75; }
+    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1); }
+  }
+
+  /* ---------- Reduced motion: no envelope animation, no bubbles, no staggered reveals ---------- */
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .001ms !important;
+      animation-delay: 0s !important;
+      transition-duration: .001ms !important;
+      transition-delay: 0s !important;
+    }
+    .particles { display: none; }
+  }
+</style>
+</head>
+
+<body>
+  <svg class="sprite" width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true" focusable="false"><defs>
+<filter id="die" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+  <feMorphology in="SourceAlpha" operator="dilate" radius="2.3" result="grow"/>
+  <feGaussianBlur in="grow" stdDeviation=".6" result="soft"/>
+  <feComponentTransfer in="soft" result="crisp"><feFuncA type="linear" slope="4" intercept="-1.2"/></feComponentTransfer>
+  <feFlood flood-color="#F7F0E4" result="paper"/>
+  <feComposite in="paper" in2="crisp" operator="in" result="rim"/>
+  <feGaussianBlur in="crisp" stdDeviation="1.7" result="sh"/>
+  <feOffset in="sh" dy="1.8" result="sh2"/>
+  <feColorMatrix in="sh2" type="matrix" values="0 0 0 0 .05  0 0 0 0 .02  0 0 0 0 .01  0 0 0 .6 0" result="shadow"/>
+  <feMerge><feMergeNode in="shadow"/><feMergeNode in="rim"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+
+<radialGradient id="g-pearl" cx=".35" cy=".3" r=".75">
+  <stop offset="0" stop-color="#fff"/><stop offset=".6" stop-color="#F0E6D6"/><stop offset="1" stop-color="#C9B79F"/>
+</radialGradient>
+<linearGradient id="g-champ" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#F7E6B4"/><stop offset="1" stop-color="#D8B36A"/>
+</linearGradient>
+<linearGradient id="g-flame" x1="0" y1="1" x2="0" y2="0">
+  <stop offset="0" stop-color="#F0A93E"/><stop offset="1" stop-color="#FFE7A0"/>
+</linearGradient>
+
+<!-- satin bow: colour comes from the "color" of whatever <use> draws it -->
+<g id="a-bow">
+  <g fill="currentColor">
+    <path d="M45 54 L27 90 L38 85 L43 94 L54 58 Z"/>
+    <path d="M55 54 L73 90 L62 85 L57 94 L46 58 Z"/>
+    <path d="M48 50 C 44 32 26 20 13 27 C 3 33 5 55 17 63 C 29 71 43 61 48 54 Z"/>
+    <path d="M52 50 C 56 32 74 20 87 27 C 97 33 95 55 83 63 C 71 71 57 61 52 54 Z"/>
+    <rect x="42" y="42" width="16" height="18" rx="6"/>
+  </g>
+  <g fill="#000" fill-opacity=".2">
+    <path d="M45 51 C 41 38 28 31 19 35 C 12 39 13 52 21 57 C 29 62 40 57 45 53 Z"/>
+    <path d="M55 51 C 59 38 72 31 81 35 C 88 39 87 52 79 57 C 71 62 60 57 55 53 Z"/>
+  </g>
+  <g fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="1.6" stroke-linecap="round">
+    <path d="M14 33 C 20 27 30 25 40 33"/>
+    <path d="M86 33 C 80 27 70 25 60 33"/>
+    <path d="M44 62 L 33 84"/><path d="M56 62 L 67 84"/>
+  </g>
+  <rect x="44" y="44" width="5" height="11" rx="2.5" fill="#fff" fill-opacity=".16"/>
+</g>
+
+<g id="a-rose"><path transform="rotate(-30)" d="M0 0 C 18 -14 38 -12 47 2 C 36 14 14 14 0 0 Z" fill="#8A9A76" stroke="#6C7C59" stroke-width="1"/><path transform="rotate(-30)" d="M6 0 C 20 -2 32 -1 42 2" fill="none" stroke="#6C7C59" stroke-width=".8"/><path transform="rotate(105)" d="M0 0 C 18 -14 38 -12 47 2 C 36 14 14 14 0 0 Z" fill="#8A9A76" stroke="#6C7C59" stroke-width="1"/><path transform="rotate(105)" d="M6 0 C 20 -2 32 -1 42 2" fill="none" stroke="#6C7C59" stroke-width=".8"/><path transform="rotate(215)" d="M0 0 C 18 -14 38 -12 47 2 C 36 14 14 14 0 0 Z" fill="#8A9A76" stroke="#6C7C59" stroke-width="1"/><path transform="rotate(215)" d="M6 0 C 20 -2 32 -1 42 2" fill="none" stroke="#6C7C59" stroke-width=".8"/><circle r="26" style="fill:var(--r1,#F5D6D7)"/><circle cx="0" cy="-21" r="19" style="fill:var(--r1,#F5D6D7);stroke:var(--rs,#D4A0A7)" stroke-width="1.1"/><circle cx="18.19" cy="-10.5" r="19" style="fill:var(--r1,#F5D6D7);stroke:var(--rs,#D4A0A7)" stroke-width="1.1"/><circle cx="18.19" cy="10.5" r="19" style="fill:var(--r1,#F5D6D7);stroke:var(--rs,#D4A0A7)" stroke-width="1.1"/><circle cx="0" cy="21" r="19" style="fill:var(--r1,#F5D6D7);stroke:var(--rs,#D4A0A7)" stroke-width="1.1"/><circle cx="-18.19" cy="10.5" r="19" style="fill:var(--r1,#F5D6D7);stroke:var(--rs,#D4A0A7)" stroke-width="1.1"/><circle cx="-18.19" cy="-10.5" r="19" style="fill:var(--r1,#F5D6D7);stroke:var(--rs,#D4A0A7)" stroke-width="1.1"/><circle cx="3.55" cy="-10.94" r="14" style="fill:var(--r2,#EEC3C7);stroke:var(--rs,#D4A0A7)" stroke-width="1.1"/><circle cx="11.5" cy="0" r="14" style="fill:var(--r2,#EEC3C7);stroke:var(--rs,#D4A0A7)" stroke-width="1.1"/><circle cx="3.55" cy="10.94" r="14" style="fill:var(--r2,#EEC3C7);stroke:var(--rs,#D4A0A7)" stroke-width="1.1"/><circle cx="-9.3" cy="6.76" r="14" style="fill:var(--r2,#EEC3C7);stroke:var(--rs,#D4A0A7)" stroke-width="1.1"/><circle cx="-9.3" cy="-6.76" r="14" style="fill:var(--r2,#EEC3C7);stroke:var(--rs,#D4A0A7)" stroke-width="1.1"/><circle cx="3.54" cy="-3.54" r="9.5" style="fill:var(--r3,#E6ABB2);stroke:var(--rs,#D4A0A7)" stroke-width="1"/><circle cx="3.54" cy="3.54" r="9.5" style="fill:var(--r3,#E6ABB2);stroke:var(--rs,#D4A0A7)" stroke-width="1"/><circle cx="-3.54" cy="3.54" r="9.5" style="fill:var(--r3,#E6ABB2);stroke:var(--rs,#D4A0A7)" stroke-width="1"/><circle cx="-3.54" cy="-3.54" r="9.5" style="fill:var(--r3,#E6ABB2);stroke:var(--rs,#D4A0A7)" stroke-width="1"/><path d="M0 0 C 3.4 -1 4.6 -5.2 0.4 -6.6 C -5 -8 -8.6 -1.4 -5.4 3.8 C -2 9 6 8.6 8.6 3" fill="none" stroke="var(--rs,#C98791)" stroke-width="1.4" stroke-linecap="round"/><path d="M-24 -10 C -20 -20 -12 -26 -3 -28" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/></g>
+
+<g id="a-spark"><path d="M50 4 C 53 34 66 47 96 50 C 66 53 53 66 50 96 C 47 66 34 53 4 50 C 34 47 47 34 50 4 Z"/></g>
+
+<g id="a-flute">
+  <path d="M-9 -70 L9 -70 C 9 -40 6 -22 0 -16 C -6 -22 -9 -40 -9 -70 Z" fill="#fff" fill-opacity=".6" stroke="#B9A78C" stroke-width="1.2" stroke-linejoin="round"/>
+  <path d="M-8.2 -52 L8.2 -52 C 8 -36 5.5 -23 0 -17.5 C -5.5 -23 -8 -36 -8.2 -52 Z" fill="url(#g-champ)"/>
+  <circle cx="-2.5" cy="-34" r="1.1" fill="#fff" fill-opacity=".9"/><circle cx="2.5" cy="-42" r="1.3" fill="#fff" fill-opacity=".9"/>
+  <circle cx="-1" cy="-47" r="1" fill="#fff" fill-opacity=".9"/><circle cx="1.5" cy="-27" r=".9" fill="#fff" fill-opacity=".9"/>
+  <path d="M-5.5 -66 C -6 -52 -5 -40 -2.5 -30" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1.6" stroke-linecap="round"/>
+  <rect x="-1.4" y="-16" width="2.8" height="44" rx="1" fill="#D3C3A8" stroke="#B9A78C" stroke-width=".6"/>
+  <ellipse cx="0" cy="29" rx="13" ry="3.4" fill="#fff" fill-opacity=".85" stroke="#B9A78C" stroke-width="1"/>
+</g>
+
+<g id="a-balloon-shape">
+  <path d="M40 5 C 61 5 70 24 66 43 C 63 58 51 67 43 69 L46 75 L34 75 L37 69 C 29 67 17 58 14 43 C 10 24 19 5 40 5 Z"
+        style="fill:var(--balloon,#F6F0E6);stroke:var(--balloon-edge,#C9BBA3)" stroke-width="1"/>
+  <path d="M43 69 L46 75 L34 75 L37 69 Z" fill="#000" fill-opacity=".18"/>
+  <ellipse cx="28" cy="24" rx="6.5" ry="11" transform="rotate(24 28 24)" fill="#fff" fill-opacity=".42"/>
+  <path d="M40 75 C 46 80 34 85 40 89 C 45 92 39 95 40 98" fill="none" stroke="#3B261C" stroke-width="1.3" stroke-linecap="round"/>
+</g>
+
+<g id="a-gift">
+  <rect x="15" y="46" width="70" height="42" rx="2" fill="#5A3A2C"/>
+  <rect x="73" y="46" width="12" height="42" fill="#000" fill-opacity=".18"/>
+  <rect x="10" y="36" width="80" height="16" rx="2.5" fill="#6F4A3A"/>
+  <rect x="10" y="48" width="80" height="4" fill="#000" fill-opacity=".16"/>
+  <rect x="44" y="36" width="12" height="52" fill="#F1E5CF"/>
+  <rect x="50" y="36" width="6" height="52" fill="#000" fill-opacity=".06"/>
+  <use href="#a-bow" transform="translate(27 5) scale(.46)" style="color:#1B1210"/>
+</g>
+
+<g id="a-cake">
+  <ellipse cx="50" cy="85" rx="45" ry="9" fill="#FBF6EC" stroke="#CDBFA8"/>
+  <path d="M17 52 L17 76 C 17 86 83 86 83 76 L83 52 Z" fill="#F3E6CC" stroke="#CDBFA8" stroke-width="1"/>
+  <path d="M68 52 L83 52 L83 76 C 83 80 77 83 68 84.5 Z" fill="#000" fill-opacity=".07"/>
+  <ellipse cx="50" cy="52" rx="33" ry="11" fill="#FBF3E2" stroke="#CDBFA8" stroke-width="1"/>
+  <circle cx="83" cy="52" r="3.1" fill="#FFF9EC" stroke="#CDBFA8" stroke-width=".7"/><circle cx="80.49" cy="56.21" r="3.1" fill="#FFF9EC" stroke="#CDBFA8" stroke-width=".7"/><circle cx="73.33" cy="59.78" r="3.1" fill="#FFF9EC" stroke="#CDBFA8" stroke-width=".7"/><circle cx="62.63" cy="62.16" r="3.1" fill="#FFF9EC" stroke="#CDBFA8" stroke-width=".7"/><circle cx="50" cy="63" r="3.1" fill="#FFF9EC" stroke="#CDBFA8" stroke-width=".7"/><circle cx="37.37" cy="62.16" r="3.1" fill="#FFF9EC" stroke="#CDBFA8" stroke-width=".7"/><circle cx="26.67" cy="59.78" r="3.1" fill="#FFF9EC" stroke="#CDBFA8" stroke-width=".7"/><circle cx="19.51" cy="56.21" r="3.1" fill="#FFF9EC" stroke="#CDBFA8" stroke-width=".7"/><circle cx="17" cy="52" r="3.1" fill="#FFF9EC" stroke="#CDBFA8" stroke-width=".7"/><circle cx="19.51" cy="47.79" r="3.1" fill="#FFF9EC" stroke="#CDBFA8" stroke-width=".7"/><circle cx="26.67" cy="44.22" r="3.1" fill="#FFF9EC" stroke="#CDBFA8" stroke-width=".7"/><circle cx="37.37" cy="41.84" r="3.1" fill="#FFF9EC" stroke="#CDBFA8" stroke-width=".7"/><circle cx="50" cy="41" r="3.1" fill="#FFF9EC" stroke="#CDBFA8" stroke-width=".7"/><circle cx="62.63" cy="41.84" r="3.1" fill="#FFF9EC" stroke="#CDBFA8" stroke-width=".7"/><circle cx="73.33" cy="44.22" r="3.1" fill="#FFF9EC" stroke="#CDBFA8" stroke-width=".7"/><circle cx="80.49" cy="47.79" r="3.1" fill="#FFF9EC" stroke="#CDBFA8" stroke-width=".7"/>
+  <path d="M17 66 C 17 77 83 77 83 66" fill="none" stroke="#1B1210" stroke-width="4.2"/>
+  <use href="#a-bow" transform="translate(36 59) scale(.28)" style="color:#1B1210"/>
+  <rect x="47" y="28" width="6" height="22" rx="1" fill="#F7EEDC" stroke="#CDBFA8" stroke-width=".8"/>
+  <path d="M50 12 C 55 18 56 23 50 27 C 44 23 45 18 50 12 Z" fill="url(#g-flame)"/>
+</g>
+
+<g id="a-candle">
+  <ellipse cx="30" cy="92" rx="19" ry="4.6" fill="#C9A96E" stroke="#A98A52" stroke-width=".8"/>
+  <path d="M27 90 L33 90 L32 80 L28 80 Z" fill="#C9A96E" stroke="#A98A52" stroke-width=".8"/>
+  <path d="M19 74 C 19 82 41 82 41 74 Z" fill="#D8BB82" stroke="#A98A52" stroke-width=".8"/>
+  <rect x="24" y="30" width="12" height="48" rx="1.5" fill="#F6EEDF" stroke="#CDBFA8" stroke-width=".9"/>
+  <rect x="31.5" y="30" width="4.5" height="48" fill="#000" fill-opacity=".07"/>
+  <path d="M24 31 C 24 36 28 35 28 40 L 29 31 Z" fill="#EDE2CC"/>
+  <path d="M30 30 L30 25" stroke="#3B261C" stroke-width="1.3" stroke-linecap="round"/>
+  <path d="M30 6 C 36 13 37 20 30 24 C 23 20 24 13 30 6 Z" fill="url(#g-flame)"/>
+  <path d="M30 14 C 33 18 33 21 30 23 C 27 21 27 18 30 14 Z" fill="#FFF3CC"/>
+</g>
+
+<g id="a-streamer"><path d="M20 4 C 34 10 34 20 20 24 S 6 38 20 44 S 34 58 20 64 S 6 78 20 84 S 30 94 20 98" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/></g>
+
+<g id="a-bouquet">
+  <path d="M50 96 L9 46 L22 38 L36 46 L50 34 L64 46 L78 38 L91 46 Z" fill="#E8C2C4" stroke="#C98E96" stroke-width="1" stroke-linejoin="round"/>
+  <path d="M50 96 L22 54 L36 46 L50 58 L64 46 L78 54 Z" fill="#F7EFE3" stroke="#D9CBB3" stroke-width=".8" stroke-linejoin="round"/>
+  <path d="M22 54 L50 96" stroke="#000" stroke-opacity=".05" stroke-width="0"/>
+  <circle cx="48.18" cy="29.64" r="2.25" fill="#fff" stroke="#D9CBB3" stroke-width=".5"/><circle cx="63" cy="32.36" r="1.97" fill="#fff" stroke="#D9CBB3" stroke-width=".5"/><circle cx="62.8" cy="30.88" r="1.64" fill="#fff" stroke="#D9CBB3" stroke-width=".5"/><circle cx="48.28" cy="26.76" r="1.69" fill="#fff" stroke="#D9CBB3" stroke-width=".5"/><circle cx="30.14" cy="36.2" r="1.72" fill="#fff" stroke="#D9CBB3" stroke-width=".5"/><circle cx="52.84" cy="42.7" r="2.55" fill="#fff" stroke="#D9CBB3" stroke-width=".5"/><circle cx="40.52" cy="21.01" r="2.58" fill="#fff" stroke="#D9CBB3" stroke-width=".5"/><circle cx="72.19" cy="32.69" r="1.89" fill="#fff" stroke="#D9CBB3" stroke-width=".5"/><circle cx="51.96" cy="28.5" r="1.91" fill="#fff" stroke="#D9CBB3" stroke-width=".5"/><circle cx="51.97" cy="21.54" r="2.18" fill="#fff" stroke="#D9CBB3" stroke-width=".5"/><circle cx="43.54" cy="18.3" r="2.15" fill="#fff" stroke="#D9CBB3" stroke-width=".5"/><circle cx="51.49" cy="26.62" r="1.81" fill="#fff" stroke="#D9CBB3" stroke-width=".5"/><circle cx="45.11" cy="15.54" r="1.91" fill="#fff" stroke="#D9CBB3" stroke-width=".5"/><circle cx="39.49" cy="19.73" r="1.9" fill="#fff" stroke="#D9CBB3" stroke-width=".5"/>
+  <g transform="translate(32 38) scale(.46)"><use href="#a-rose"/></g>
+  <g transform="translate(68 38) scale(.46)"><use href="#a-rose" style="--r1:#E9B3B9;--r2:#DE98A2;--r3:#D17F8C;--rs:#BE6F7C"/></g>
+  <g transform="translate(50 25) scale(.5)"><use href="#a-rose"/></g>
+  <use href="#a-bow" transform="translate(37 62) scale(.26)" style="color:#1B1210"/>
+</g>
+<g id="k-bow"><g filter="url(#die)"><use href="#a-bow" style="color:#1B1210"/></g></g><g id="k-bow-choc"><g filter="url(#die)"><use href="#a-bow" style="color:#6F4A3A"/></g></g><g id="k-pearls"><g filter="url(#die)"><path d="M6 12 Q50 84 94 12" fill="none" stroke="#B9A68C" stroke-width=".9"/><circle cx="6" cy="12" r="4.1" fill="url(#g-pearl)" stroke="#B9A68C" stroke-width=".5"/><circle cx="4.69" cy="10.61" r="0.9" fill="#fff" fill-opacity=".9"/><circle cx="11.39" cy="20.28" r="4.1" fill="url(#g-pearl)" stroke="#B9A68C" stroke-width=".5"/><circle cx="10.08" cy="18.89" r="0.9" fill="#fff" fill-opacity=".9"/><circle cx="17.33" cy="28.15" r="4.1" fill="url(#g-pearl)" stroke="#B9A68C" stroke-width=".5"/><circle cx="16.02" cy="26.76" r="0.9" fill="#fff" fill-opacity=".9"/><circle cx="24.04" cy="35.47" r="4.1" fill="url(#g-pearl)" stroke="#B9A68C" stroke-width=".5"/><circle cx="22.73" cy="34.07" r="0.9" fill="#fff" fill-opacity=".9"/><circle cx="31.63" cy="41.72" r="4.1" fill="url(#g-pearl)" stroke="#B9A68C" stroke-width=".5"/><circle cx="30.32" cy="40.33" r="0.9" fill="#fff" fill-opacity=".9"/><circle cx="40.43" cy="46.3" r="4.1" fill="url(#g-pearl)" stroke="#B9A68C" stroke-width=".5"/><circle cx="39.12" cy="44.9" r="0.9" fill="#fff" fill-opacity=".9"/><circle cx="50.11" cy="48" r="4.1" fill="url(#g-pearl)" stroke="#B9A68C" stroke-width=".5"/><circle cx="48.8" cy="46.61" r="0.9" fill="#fff" fill-opacity=".9"/><circle cx="59.68" cy="46.26" r="4.1" fill="url(#g-pearl)" stroke="#B9A68C" stroke-width=".5"/><circle cx="58.37" cy="44.86" r="0.9" fill="#fff" fill-opacity=".9"/><circle cx="68.48" cy="41.65" r="4.1" fill="url(#g-pearl)" stroke="#B9A68C" stroke-width=".5"/><circle cx="67.17" cy="40.26" r="0.9" fill="#fff" fill-opacity=".9"/><circle cx="76.07" cy="35.36" r="4.1" fill="url(#g-pearl)" stroke="#B9A68C" stroke-width=".5"/><circle cx="74.76" cy="33.97" r="0.9" fill="#fff" fill-opacity=".9"/><circle cx="82.78" cy="28.02" r="4.1" fill="url(#g-pearl)" stroke="#B9A68C" stroke-width=".5"/><circle cx="81.47" cy="26.63" r="0.9" fill="#fff" fill-opacity=".9"/><circle cx="88.72" cy="20.12" r="4.1" fill="url(#g-pearl)" stroke="#B9A68C" stroke-width=".5"/><circle cx="87.41" cy="18.73" r="0.9" fill="#fff" fill-opacity=".9"/><circle cx="94" cy="12" r="4.1" fill="url(#g-pearl)" stroke="#B9A68C" stroke-width=".5"/><circle cx="92.69" cy="10.61" r="0.9" fill="#fff" fill-opacity=".9"/></g></g><g id="k-cheers"><g filter="url(#die)"><use href="#a-flute" transform="translate(33 68) rotate(10) scale(.8)"/><use href="#a-flute" transform="translate(67 68) rotate(-10) scale(.8)"/></g></g><g id="k-candle"><g filter="url(#die)"><use href="#a-candle"/></g></g><g id="k-balloon"><g filter="url(#die)"><use href="#a-balloon-shape"/><use href="#a-bow" transform="translate(24.5 17.5) rotate(-16 6.5 6.5) scale(0.13)" style="color:#1B1210"/><use href="#a-bow" transform="translate(44.0 16.0) rotate(12 6.0 6.0) scale(0.12)" style="color:#1B1210"/><use href="#a-bow" transform="translate(20.0 36.0) rotate(18 6.0 6.0) scale(0.12)" style="color:#1B1210"/><use href="#a-bow" transform="translate(46.5 33.5) rotate(-10 6.5 6.5) scale(0.13)" style="color:#1B1210"/><use href="#a-bow" transform="translate(34.5 49.5) rotate(8 5.5 5.5) scale(0.11)" style="color:#1B1210"/><use href="#a-bow" transform="translate(34.5 31.5) rotate(0 4.5 4.5) scale(0.09)" style="color:#1B1210"/></g></g><g id="k-balloon-black"><g filter="url(#die)"><use href="#a-balloon-shape" style="--balloon:#241A17;--balloon-edge:#0F0A09"/></g></g><g id="k-rose"><g filter="url(#die)"><g transform="translate(50 50) scale(1.02)"><use href="#a-rose"/></g></g></g><g id="k-rose-deep"><g filter="url(#die)"><g transform="translate(50 50) scale(1.02)"><use href="#a-rose" style="--r1:#E9B3B9;--r2:#DE98A2;--r3:#D17F8C;--rs:#BE6F7C"/></g></g></g><g id="k-bouquet"><g filter="url(#die)"><use href="#a-bouquet"/></g></g><g id="k-gift"><g filter="url(#die)"><use href="#a-gift"/></g></g><g id="k-cake"><g filter="url(#die)"><use href="#a-cake"/></g></g><g id="k-streamer"><g filter="url(#die)"><use href="#a-streamer" style="color:#1B1210"/></g></g><g id="k-streamer-gold"><g filter="url(#die)"><use href="#a-streamer" style="color:#C9A96E"/></g></g><g id="k-spark"><use href="#a-spark" style="fill:#D9BC82"/></g></defs></svg>
+
+  <!-- ============================================================
+       STICKERS — the little illustrations in the background.
+       One line = one sticker. To remove one, delete its line.
+       To move one, change --x/--y (phones and tablets) and --xl/--yl
+       (wide screens), as a percent of the window. --s / --sl is the
+       size in pixels, --r the tilt in degrees. Available pictures (the name after
+       "#k-"): bow, bow-choc, pearls, cheers, candle, balloon,
+       balloon-black, rose, rose-deep, bouquet, gift, cake,
+       streamer, streamer-gold, spark.
+       ============================================================ -->
+  <div class="decor" aria-hidden="true">
+    <i class="st" style="--x:12%;--y:8%;--s:60;--xl:19%;--yl:27%;--sl:95;--ar:1.000;--r:-14;--i:0"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-bow-choc"/></svg></i>
+    <i class="st" style="--x:30%;--y:8%;--s:88;--xl:8%;--yl:15%;--sl:175;--ar:0.800;--r:-8;--i:1"><svg viewBox="0 0 80 100" focusable="false"><use href="#k-balloon"/></svg></i>
+    <i class="st" style="--x:54%;--y:9%;--s:82;--xl:24%;--yl:57%;--sl:155;--ar:1.000;--r:8;--i:2"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-cheers"/></svg></i>
+    <i class="st" style="--x:74%;--y:8%;--s:62;--xl:12%;--yl:41%;--sl:118;--ar:1.000;--r:18;--i:3"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-rose"/></svg></i>
+    <i class="st" style="--x:13%;--y:92%;--s:68;--xl:9%;--yl:73%;--sl:125;--ar:1.000;--r:-8;--i:4"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-gift"/></svg></i>
+    <i class="st" style="--x:42%;--y:95%;--s:62;--xl:20%;--yl:88%;--sl:140;--ar:1.429;--r:3;--i:5"><svg viewBox="0 0 100 70" focusable="false"><use href="#k-pearls"/></svg></i>
+    <i class="st" style="--x:68%;--y:92%;--s:78;--xl:90%;--yl:46%;--sl:160;--ar:1.000;--r:6;--i:6"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-cake"/></svg></i>
+    <i class="st" style="--x:90%;--y:92%;--s:58;--xl:88%;--yl:74%;--sl:100;--ar:1.000;--r:14;--i:7"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-bow"/></svg></i>
+    <i class="st" style="--x:3%;--y:44%;--s:92;--xl:4%;--yl:51%;--sl:140;--ar:0.400;--r:6;--i:8"><svg viewBox="0 0 40 100" focusable="false"><use href="#k-streamer-gold"/></svg></i>
+    <i class="st" style="--x:97%;--y:50%;--s:92;--xl:88%;--yl:17%;--sl:160;--ar:0.600;--r:-6;--i:9"><svg viewBox="0 0 60 100" focusable="false"><use href="#k-candle"/></svg></i>
+    <i class="st" style="--x:42%;--y:3.5%;--s:20;--xl:42%;--yl:7%;--sl:34;--ar:1.000;--r:0;--i:10"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-spark"/></svg></i>
+    <i class="st" style="--x:30%;--y:88%;--s:18;--xl:33%;--yl:95%;--sl:20;--ar:1.000;--r:0;--i:11"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-spark"/></svg></i>
+    <i class="st st--wide" style="--x:96%;--y:31%;--s:125;--xl:96%;--yl:31%;--sl:125;--ar:0.400;--r:-6;--i:12"><svg viewBox="0 0 40 100" focusable="false"><use href="#k-streamer"/></svg></i>
+    <i class="st st--wide" style="--x:80%;--y:31%;--s:105;--xl:80%;--yl:31%;--sl:105;--ar:1.000;--r:18;--i:13"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-rose-deep"/></svg></i>
+    <i class="st st--wide" style="--x:77%;--y:59%;--s:150;--xl:77%;--yl:59%;--sl:150;--ar:0.800;--r:10;--i:14"><svg viewBox="0 0 80 100" focusable="false"><use href="#k-balloon-black"/></svg></i>
+    <i class="st st--wide" style="--x:78%;--y:87%;--s:160;--xl:78%;--yl:87%;--sl:160;--ar:1.000;--r:6;--i:15"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-bouquet"/></svg></i>
+    <i class="st st--wide" style="--x:6%;--y:90%;--s:70;--xl:6%;--yl:90%;--sl:70;--ar:1.000;--r:22;--i:16"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-bow-choc"/></svg></i>
+    <i class="st st--wide" style="--x:62%;--y:9%;--s:24;--xl:62%;--yl:9%;--sl:24;--ar:1.000;--r:0;--i:17"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-spark"/></svg></i>
+    <i class="st st--wide" style="--x:47%;--y:92%;--s:24;--xl:47%;--yl:92%;--sl:24;--ar:1.000;--r:0;--i:18"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-spark"/></svg></i>
+    <i class="st st--wide" style="--x:66%;--y:94%;--s:28;--xl:66%;--yl:94%;--sl:28;--ar:1.000;--r:0;--i:19"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-spark"/></svg></i>
+    <i class="st st--wide" style="--x:15%;--y:29%;--s:22;--xl:15%;--yl:29%;--sl:22;--ar:1.000;--r:0;--i:20"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-spark"/></svg></i>
+    <i class="st st--wide" style="--x:30%;--y:72%;--s:20;--xl:30%;--yl:72%;--sl:20;--ar:1.000;--r:0;--i:21"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-spark"/></svg></i>
+    <i class="st st--wide" style="--x:70%;--y:73%;--s:22;--xl:70%;--yl:73%;--sl:22;--ar:1.000;--r:0;--i:22"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-spark"/></svg></i>
+    <i class="st st--wide" style="--x:84%;--y:60%;--s:20;--xl:84%;--yl:60%;--sl:20;--ar:1.000;--r:0;--i:23"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-spark"/></svg></i>
+    <i class="st st--wide" style="--x:95%;--y:90%;--s:22;--xl:95%;--yl:90%;--sl:22;--ar:1.000;--r:0;--i:24"><svg viewBox="0 0 100 100" focusable="false"><use href="#k-spark"/></svg></i>
+  </div>
+
+  <main class="stage">
+
+    <!-- Screen 1 + 2: introduction and envelope -->
+    <section class="screen intro" id="intro" aria-labelledby="intro-title">
+      <h1 class="intro__title enter" id="intro-title" style="--i:0"></h1>
+      <p class="intro__date enter" id="intro-date" style="--i:1"></p>
+
+      <!-- Decorative; clicking it opens the letter too. The button below is the accessible control. -->
+      <div class="envelope enter enter--rise" id="envelope" aria-hidden="true" style="--i:2">
+        <div class="env__back"></div>
+        <div class="env__letter">
+          <span class="env__line env__line--accent"></span>
+          <span class="env__line"></span>
+          <span class="env__line"></span>
+          <span class="env__line"></span>
+        </div>
+        <div class="env__pocket">
+          <svg viewBox="0 0 100 66" preserveAspectRatio="none" focusable="false"><path d="M0 66 L50 35.6 L100 66"/></svg>
+        </div>
+        <div class="env__flap">
+          <div class="env__face env__face--front"></div>
+          <div class="env__face env__face--back"></div>
+        </div>
+        <div class="env__bow"><svg viewBox="0 0 100 100" focusable="false"><use href="#a-bow"/></svg></div>
+      </div>
+
+      <button class="btn enter" id="open-btn" type="button" style="--i:3">Open when ready</button>
+    </section>
+
+    <!-- Screen 3: the message (filled in from CONFIG) -->
+    <section class="screen message" id="message" aria-labelledby="msg-title" hidden>
+      <div class="card">
+        <h2 class="msg__greeting reveal" id="msg-title" tabindex="-1" style="--i:0"></h2>
+        <span class="msg__rule" aria-hidden="true" style="--i:1"></span>
+        <div class="msg__body" id="msg-body"></div>
+        <p class="msg__closing reveal" id="msg-closing"></p>
+        <p class="msg__signature reveal" id="msg-signature"></p>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="particles" id="particles" aria-hidden="true"></div>
+
+  <!-- Sound on / off. Sound only ever starts after she taps the button or the envelope. -->
+  <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="true" aria-label="Turn sound off">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M4 9.5h3.2L12 5.5v13l-4.8-4H4z"/>
+      <path class="wave" d="M15.2 9.2c1.2 1.5 1.2 4.1 0 5.6M17.8 6.8c2.4 2.8 2.4 7.6 0 10.4"/>
+      <path class="slash" d="M4.5 4.5l15 15"/>
+    </svg>
+  </button>
+
+  <!-- ============================================================
+       EDIT HERE — the only part of this file you need to change.
+       Keep the quotation marks and commas. If your text contains a
+       double quote ("), write it as \" instead.
+       ============================================================ -->
+  <script>
+    const CONFIG = {
+      recipientName: "Laila",     // appears in the heading: "A little something for ___."
+      senderName:    "Abdul",          // appears in the signature: "A little thought from ___"
+      birthdayDate:  "November 25, 2026",  // shown in capitals under the heading
+
+      sound: true,                         // soft paper and chime sounds when the letter opens (true / false)
+
+      // Optional background music. Put the audio file in the same folder as this page and type its name
+      // here, for example "music.mp3". It starts as soon as the page opens, or on her first tap if the
+      // browser blocks that. Leave "" for no music.
+      music: "Background.mp3",
+      musicLoop: false,                    // true = start again when the track ends
+
+      greeting: "Happy Birthday!",
+
+      // One line of text per paragraph. Add or remove lines as you like.
+      message: [
+        "I hope this new chapter brings you good people, unexpected opportunities, beautiful memories, and plenty of reasons to smile.",
+        "Wishing you nothing but good things in the year ahead."
+      ],
+
+      closing: "Here’s to a good year ahead."
+    };
+  </script>
+
+  <!-- Behaviour. Nothing to edit below this line. -->
+  <script>
+    (function () {
+      'use strict';
+
+      const C = CONFIG;
+      const $ = (id) => document.getElementById(id);
+
+      const intro = $('intro');
+      const message = $('message');
+      const envelope = $('envelope');
+      const openBtn = $('open-btn');
+      const greeting = $('msg-title');
+      const body = $('msg-body');
+      const closing = $('msg-closing');
+      const signature = $('msg-signature');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      // Timing (ms). Keep in step with the opening sequence described in the CSS.
+      const FADE_OUT_AT = 2000;
+      const SHOW_MESSAGE_AT = 2550;
+
+      let opened = false;
+
+      // ----- Sound -----
+      // Everything is synthesised in the browser, so there are no audio files to host.
+      // It only starts after a tap (browsers require that), stays quiet, and lasts about three seconds.
+      const VOLUME = 0.8;                       // overall level, 0 to 1
+      const SOUND_KEY = 'a-little-something-sound';
+      const soundBtn = $('sound-toggle');
+      let soundOn = true;
+      try { soundOn = localStorage.getItem(SOUND_KEY) !== 'off'; } catch (e) { /* storage blocked: keep the default */ }
+
+      let ac = null, master = null, send = null, noise = null;
+
+      function showSoundState() {
+        soundBtn.setAttribute('aria-pressed', String(soundOn));
+        soundBtn.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+        soundBtn.classList.toggle('is-off', !soundOn);
+      }
+
+      function getAudio() {
+        if (ac) return ac;
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return null;
+        try {
+          ac = new AC();
+          master = ac.createGain();
+          master.gain.value = soundOn ? VOLUME : 0;
+          master.connect(ac.destination);
+
+          // A faint, soft echo gives the chime a little room.
+          const delay = ac.createDelay(1);
+          delay.delayTime.value = 0.21;
+          const damp = ac.createBiquadFilter();
+          damp.type = 'lowpass';
+          damp.frequency.value = 3200;
+          const feedback = ac.createGain();
+          feedback.gain.value = 0.3;
+          send = ac.createGain();
+          send.gain.value = 0.35;
+          send.connect(delay);
+          delay.connect(damp);
+          damp.connect(master);
+          damp.connect(feedback);
+          feedback.connect(delay);
+
+          // Two seconds of noise, reused for both paper sounds.
+          noise = ac.createBuffer(1, ac.sampleRate * 2, ac.sampleRate);
+          const data = noise.getChannelData(0);
+          for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+        } catch (e) {
+          ac = null;
+        }
+        return ac;
+      }
+
+      function noiseSource() {
+        const src = ac.createBufferSource();
+        src.buffer = noise;
+        src.loop = true;
+        return src;
+      }
+
+      // The flap lifting: a short, dry crinkle that swells and fades.
+      function rustle(t, dur) {
+        const src = noiseSource();
+        const hp = ac.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 1400;
+        const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 4200; bp.Q.value = 0.7;
+        const g = ac.createGain(); g.gain.value = 0;
+        src.connect(hp); hp.connect(bp); bp.connect(g); g.connect(master);
+        const step = 0.035, n = Math.round(dur / step);
+        for (let k = 0; k < n; k++) {
+          const swell = Math.sin(Math.PI * (k + 0.5) / n);
+          g.gain.setTargetAtTime(0.1 * swell * (0.25 + Math.random() * 0.75), t + k * step, 0.006);
+        }
+        g.gain.setTargetAtTime(0, t + dur, 0.03);
+        src.start(t, Math.random() * 1.5);
+        src.stop(t + dur + 0.4);
+      }
+
+      // The letter sliding out: a soft "shh" that starts quickly and eases off, like the motion.
+      function slide(t, dur) {
+        const src = noiseSource();
+        const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 0.9;
+        bp.frequency.setValueAtTime(2600, t);
+        bp.frequency.exponentialRampToValueAtTime(1200, t + dur);
+        const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 5000;
+        const g = ac.createGain();
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(0.075, t + dur * 0.15);
+        g.gain.linearRampToValueAtTime(0, t + dur);
+        src.connect(bp); bp.connect(lp); lp.connect(g); g.connect(master);
+        src.start(t, Math.random() * 1.5);
+        src.stop(t + dur + 0.1);
+      }
+
+      // The card appearing: two soft glass notes, an open fifth, ringing out.
+      function chime(t) {
+        [[880, 0], [1318.5, 0.17]].forEach(([freq, offset]) => {
+          const s = t + offset;
+          [[1, 0.2, 1.7], [2.76, 0.06, 0.6], [5.4, 0.025, 0.25]].forEach(([mult, amp, decay]) => {
+            const o = ac.createOscillator();
+            o.type = 'sine';
+            o.frequency.value = freq * mult;
+            const g = ac.createGain();
+            g.gain.setValueAtTime(0, s);
+            g.gain.linearRampToValueAtTime(amp, s + 0.006);
+            g.gain.exponentialRampToValueAtTime(0.0001, s + decay);
+            o.connect(g); g.connect(master); g.connect(send);
+            o.start(s);
+            o.stop(s + decay + 0.05);
+          });
+        });
+      }
+
+      function playOpeningSounds(reduced) {
+        if (!C.sound || !soundOn) return;
+        const ctx = getAudio();
+        if (!ctx) return;
+        const go = () => {
+          const t = ctx.currentTime;
+          if (reduced) { chime(t + 0.05); return; }      // no animation, so only the chime
+          rustle(t + 0.28, 0.6);                          // flap opens
+          slide(t + 0.88, 0.85);                          // letter slides out
+          chime(t + SHOW_MESSAGE_AT / 1000);              // card appears
+        };
+        if (ctx.state === 'running') go(); else ctx.resume().then(go, () => {});
+      }
+
+      // ----- Background music (optional: set "music" in CONFIG) -----
+      // It tries to start the moment the page opens. Browsers usually block sound until the visitor
+      // touches the page, so if it is blocked, it starts on her very first tap or key press instead.
+      // The speaker button controls it too.
+      const MUSIC_VOLUME = 0.45;   // 0 to 1
+      const MUSIC_FADE_MS = 3000;  // how long the fade-in takes
+      const UNLOCK_EVENTS = ['pointerdown', 'pointerup', 'touchend', 'keydown', 'click'];
+      let music = null, started = false, fadeTimer = 0;
+
+      if (C.sound && C.music) {
+        music = new Audio();
+        music.preload = 'auto';
+        music.loop = Boolean(C.musicLoop);
+        music.volume = 0;
+        music.addEventListener('error', () => {
+          console.warn('A Little Something: could not load the music file "' + C.music + '". Check the name and that it sits next to index.html.');
+          music = null;
+        });
+        music.src = C.music;
+      }
+
+      function removeUnlock() {
+        UNLOCK_EVENTS.forEach((ev) => window.removeEventListener(ev, startMusic));
+      }
+
+      function fadeMusicIn() {
+        clearInterval(fadeTimer);
+        const t0 = performance.now();
+        fadeTimer = setInterval(() => {
+          if (!music) { clearInterval(fadeTimer); return; }
+          const k = Math.min(1, (performance.now() - t0) / MUSIC_FADE_MS);
+          music.volume = MUSIC_VOLUME * k;   // iPhones ignore this and play at the file's own level
+          if (k === 1) clearInterval(fadeTimer);
+        }, 100);
+      }
+
+      function startMusic() {
+        if (!music) { removeUnlock(); return; }
+        if (!soundOn || started) return;
+        music.muted = false;
+        music.volume = 0;
+        const begun = () => { started = true; removeUnlock(); fadeMusicIn(); };
+        const p = music.play();
+        if (p && p.then) p.then(begun, () => { /* blocked until she touches the page */ });
+        else begun();
+      }
+
+      function stopMusic() {
+        clearInterval(fadeTimer);
+        started = false;
+        if (music) music.pause();
+      }
+
+      if (music) {
+        UNLOCK_EVENTS.forEach((ev) => window.addEventListener(ev, startMusic, { passive: true }));
+        startMusic();   // try straight away; this only works where the browser allows it
+      }
+
+      if (C.sound) {
+        showSoundState();
+        soundBtn.addEventListener('click', () => {
+          soundOn = !soundOn;
+          try { localStorage.setItem(SOUND_KEY, soundOn ? 'on' : 'off'); } catch (e) { /* ignore */ }
+          showSoundState();
+          if (soundOn) getAudio(); // unlock audio during this tap
+          if (ac) master.gain.setTargetAtTime(soundOn ? VOLUME : 0, ac.currentTime, 0.03);
+          if (!soundOn) stopMusic(); else startMusic();
+        });
+      } else {
+        soundBtn.hidden = true;
+      }
+
+      // ----- Fill the page from CONFIG (textContent: nothing is parsed as HTML) -----
+      document.title = 'A little something for ' + C.recipientName;
+      $('intro-title').textContent = 'A little something for ' + C.recipientName + '.';
+      $('intro-date').textContent = C.birthdayDate;
+      greeting.textContent = C.greeting;
+
+      let step = 2; // greeting = 0, rule = 1, then each line reveals in turn
+      C.message.forEach((text) => {
+        const p = document.createElement('p');
+        p.className = 'reveal';
+        p.style.setProperty('--i', step++);
+        p.textContent = text;
+        body.appendChild(p);
+      });
+
+      closing.textContent = C.closing;
+      closing.style.setProperty('--i', step++);
+      signature.textContent = 'A little thought from ' + C.senderName;
+      signature.style.setProperty('--i', step);
+
+      if (/Her First Name|Your Name/.test(C.recipientName + ' ' + C.senderName)) {
+        console.warn('A Little Something: the placeholder names are still in place. Edit the CONFIG block ("EDIT HERE").');
+      }
+
+      // ----- A few champagne bubbles drifting upward, then gone -----
+      function celebrate() {
+        const layer = $('particles');
+        const colors = ['#E3CFA0', '#F6F3EC', '#C9A96E', '#EBC6C8'];
+        const spread = Math.min(window.innerWidth / 2 - 24, 190);
+
+        for (let i = 0; i < 18; i++) {
+          const p = document.createElement('span');
+          p.className = 'particle';
+          p.style.background = colors[i % colors.length];
+          p.style.setProperty('--size', (4 + Math.random() * 4).toFixed(1) + 'px');
+          p.style.setProperty('--dx', ((Math.random() * 2 - 1) * spread).toFixed(0) + 'px');
+          p.style.setProperty('--dy', (-(80 + Math.random() * 200)).toFixed(0) + 'px');
+          p.style.setProperty('--dur', (2.8 + Math.random() * 1.8).toFixed(2) + 's');
+          p.style.setProperty('--delay', (Math.random() * 0.9).toFixed(2) + 's');
+          layer.appendChild(p);
+        }
+        window.setTimeout(() => { layer.textContent = ''; }, 7000);
+      }
+
+      // ----- Screen change -----
+      function showMessage() {
+        intro.hidden = true;
+        message.hidden = false;
+        window.scrollTo(0, 0);
+        greeting.focus({ preventScroll: true }); // keeps keyboard and screen-reader users in context
+        if (!reduceMotion.matches) celebrate();
+      }
+
+      function openEnvelope() {
+        if (opened) return;
+        opened = true;
+        openBtn.disabled = true;
+        playOpeningSounds(reduceMotion.matches);
+        startMusic();
+
+        if (reduceMotion.matches) {  // skip the animation entirely
+          showMessage();
+          return;
+        }
+
+        intro.classList.add('is-opening');
+        window.setTimeout(() => intro.classList.add('is-leaving'), FADE_OUT_AT);
+        window.setTimeout(showMessage, SHOW_MESSAGE_AT);
+      }
+
+      openBtn.addEventListener('click', openEnvelope);
+      envelope.addEventListener('click', openEnvelope);
+    })();
+  </script>
+</body>
+</html>
